@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/eight"
+    style="@style/horizontalLinearLayout"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:background="@drawable/circle"
+        android:maxLength="1"
+        android:id="@+id/itemHeading"
+        android:text="@string/app_name"
+        android:gravity="center"
+        style="@style/classTextView" />
+
+    <TextView
+        android:text="@string/app_name"
+        android:gravity="center"
+        android:id="@+id/itemText"
+        android:textColor="@color/cardview_dark_background"
+        android:layout_marginStart="@dimen/sixteen"
+        style="@style/classTextView" />
+
+</LinearLayout>
