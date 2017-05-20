@@ -12,4 +12,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- -->
 
+    <!-- navItems-->
+    <string name="navRetrofit">Retrofit</string>
+    <string name="navRxJava">RxJava</string>
+    <!-- -->
+
 </resources>

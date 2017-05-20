@@ -37,7 +37,7 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
     private static final String LOG_TAG = SbUserListFragment.class.getSimpleName();
     List<ShelBeeUserObject> mUserList;
     private Unbinder mUnbinder;
-    SbUsrLsAdapter mAdapter;
+    private SbUsrLsAdapter mAdapter;
 
     public SbUserListFragment() {
     }

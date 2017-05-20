@@ -56,7 +56,7 @@ public class SbUsrLsAdapter extends RecyclerView.Adapter<SbUsrLsAdapter.MyViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
             }
         });
     }

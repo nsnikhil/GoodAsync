@@ -8,13 +8,13 @@
             android:checkable="true"
             android:checked="true"
             android:icon="@mipmap/ic_launcher_round"
-            android:title="@string/app_name" />
+            android:title="@string/navRetrofit" />
 
         <item
             android:id="@+id/navItem2"
             android:checkable="true"
             android:icon="@mipmap/ic_launcher_round"
-            android:title="@string/app_name" />
+            android:title="@string/navRxJava" />
 
         <item
             android:id="@+id/navItem3"

@@ -9,6 +9,7 @@ import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.nrs.nsnik.goodasync.fragments.SbUsLsRxJvFragment;
 import com.nrs.nsnik.goodasync.fragments.SbUserListFragment;
 
 import butterknife.BindView;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.mainDrawerLayout) DrawerLayout mDrawerLayout;
     @BindView(R.id.mainNavigationView) NavigationView mNavigationView;
     @BindView(R.id.mainContainer) RelativeLayout mMainContainer;
-    SbUserListFragment SbUsrListFragment;
+    private static final String[] mFragmentTags = {"retrofit","rxjava"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +48,9 @@ public class MainActivity extends AppCompatActivity {
             initialize();
             initializeDrawer();
             listeners();
-            addFragments(savedInstanceState);
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,new SbUserListFragment(),mFragmentTags[0]).commit();
         } else {
             removeOffConnection(savedInstanceState);
-        }
-    }
-
-    private void addFragments(Bundle savedInstanceState) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        if (savedInstanceState == null) {
-            SbUsrListFragment = new SbUserListFragment();
-            ft.add(R.id.mainContainer, SbUsrListFragment);
-            ft.show(SbUsrListFragment);
-            ft.commit();
         }
     }
 
@@ -101,9 +93,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navItem1:
+                        if(getSupportFragmentManager().findFragmentByTag(mFragmentTags[0])==null){
+                            replaceFragment(new SbUserListFragment(),mFragmentTags[0]);
+                        }
                         drawerAction(0);
                         break;
                     case R.id.navItem2:
+                        if(getSupportFragmentManager().findFragmentByTag(mFragmentTags[1])==null){
+                            replaceFragment(new SbUsLsRxJvFragment(),mFragmentTags[1]);
+                        }
                         drawerAction(1);
                         break;
                     case R.id.navItem3:
@@ -115,6 +113,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void replaceFragment(Fragment fragment,String tag) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.mainContainer, fragment,tag);
+        ft.commit();
+    }
 
     private void drawerAction(int key) {
         invalidateOptionsMenu();
