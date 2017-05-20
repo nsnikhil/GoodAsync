@@ -3,6 +3,7 @@ package com.nrs.nsnik.goodasync.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,10 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.nrs.nsnik.goodasync.R;
 import com.nrs.nsnik.goodasync.adapters.SbUsrLsAdapter;
-import com.nrs.nsnik.goodasync.interfaces.SbUserInterface;
+import com.nrs.nsnik.goodasync.interfaces.SbInterface;
 import com.nrs.nsnik.goodasync.objects.ShelBeeUserObject;
 
 import java.util.ArrayList;
@@ -33,6 +33,8 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
 
 
     @BindView(R.id.sbUserList) RecyclerView mSbUsrList;
+    @BindView(R.id.sbUserSwipe) SwipeRefreshLayout mRefreshList;
+    private static final String LOG_TAG = SbUserListFragment.class.getSimpleName();
     List<ShelBeeUserObject> mUserList;
     private Unbinder mUnbinder;
     SbUsrLsAdapter mAdapter;
@@ -55,29 +57,40 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
         mSbUsrList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new SbUsrLsAdapter(getActivity(),mUserList);
         mSbUsrList.setAdapter(mAdapter);
+        mRefreshList.setRefreshing(true);
         getUserList();
     }
 
     private void listeners() {
+        mRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mUserList.clear();
+                mSbUsrList.setAdapter(null);
+                getUserList();
+            }
+        });
     }
 
     private void getUserList(){
-        Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getActivity().getResources().getString(R.string.urlShelfBeeBase))
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        SbUserInterface api = retrofit.create(SbUserInterface.class);
+        SbInterface api = retrofit.create(SbInterface.class);
         Call<List<ShelBeeUserObject>> call = api.getUserList();
         call.enqueue(new Callback<List<ShelBeeUserObject>>() {
             @Override
             public void onResponse(@NonNull Call<List<ShelBeeUserObject>> call, @NonNull Response<List<ShelBeeUserObject>> response) {
-
+                mRefreshList.setRefreshing(false);
+                mUserList.addAll(response.body());
+                mAdapter = new SbUsrLsAdapter(getActivity(), mUserList);
+                mSbUsrList.setAdapter(mAdapter);
             }
 
             @Override
             public void onFailure(@NonNull Call<List<ShelBeeUserObject>> call, @NonNull Throwable t) {
-
+                Log.d(LOG_TAG,t.toString());
             }
         });
     }

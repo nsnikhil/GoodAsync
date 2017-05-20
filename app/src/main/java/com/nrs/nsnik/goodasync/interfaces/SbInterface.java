@@ -7,10 +7,15 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
-public interface SbUserInterface {
+public interface SbInterface {
 
     @GET("/booktrade/userQueryEvery.php")
     Call<List<ShelBeeUserObject>> getUserList();
+
+    @GET("/booktrade/userQueryAll.php")
+    Call<List<ShelBeeUserObject>> getSingleUser(@Query("uid") String userId);
 
 }

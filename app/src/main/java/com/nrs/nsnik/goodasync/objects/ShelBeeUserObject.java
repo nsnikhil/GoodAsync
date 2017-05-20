@@ -1,18 +1,27 @@
 package com.nrs.nsnik.goodasync.objects;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ShelBeeUserObject {
 
-    private String mUid,mPhone,mName,mAddress,mFireKey;
+    @SerializedName("uid")
+    private String mUid;
+
+    @SerializedName("phoneno")
+    private String mPhone;
+
+    @SerializedName("name")
+    private String mName;
+
+    @SerializedName("address")
+    private String mAddress;
+
+    @SerializedName("fkey")
+    private String mFireKey;
+
+    @SerializedName("bstatus")
     private int mBanStatus;
 
-    public ShelBeeUserObject(String uid,String name,String phone,String address,String fireKey,int banStatus){
-        mUid = uid;
-        mName = name;
-        mPhone = phone;
-        mAddress = address;
-        mFireKey = fireKey;
-        mBanStatus = banStatus;
-    }
 
     public String getmUid() {
         return mUid;

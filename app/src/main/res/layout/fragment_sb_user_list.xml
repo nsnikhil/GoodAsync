@@ -3,9 +3,15 @@
     style="@style/matchParent"
     tools:context="com.nrs.nsnik.goodasync.fragments.SbUserListFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/sbUserList"
-        style="@style/matchParent" />
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sbUserSwipe"
+        style="@style/matchParent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sbUserList"
+            style="@style/matchParent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
 
