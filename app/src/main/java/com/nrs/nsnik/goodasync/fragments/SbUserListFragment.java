@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.nrs.nsnik.goodasync.R;
@@ -34,6 +35,7 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
 
     @BindView(R.id.sbUserList) RecyclerView mSbUsrList;
     @BindView(R.id.sbUserSwipe) SwipeRefreshLayout mRefreshList;
+    @BindView(R.id.emptyText) TextView mEmptyListText;
     private static final String LOG_TAG = SbUserListFragment.class.getSimpleName();
     List<ShelBeeUserObject> mUserList;
     private Unbinder mUnbinder;
@@ -82,10 +84,14 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
         call.enqueue(new Callback<List<ShelBeeUserObject>>() {
             @Override
             public void onResponse(@NonNull Call<List<ShelBeeUserObject>> call, @NonNull Response<List<ShelBeeUserObject>> response) {
-                mRefreshList.setRefreshing(false);
-                mUserList.addAll(response.body());
-                mAdapter = new SbUsrLsAdapter(getActivity(), mUserList);
-                mSbUsrList.setAdapter(mAdapter);
+                if(response.body().size()<=0){
+                   setEmpty();
+                }else {
+                    mRefreshList.setRefreshing(false);
+                    mUserList.addAll(response.body());
+                    mAdapter = new SbUsrLsAdapter(getActivity(), mUserList);
+                    mSbUsrList.setAdapter(mAdapter);
+                }
             }
 
             @Override
@@ -93,6 +99,11 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
                 Log.d(LOG_TAG,t.toString());
             }
         });
+    }
+
+    private void setEmpty(){
+        mSbUsrList.setVisibility(View.GONE);
+        mEmptyListText.setVisibility(View.VISIBLE);
     }
 
 

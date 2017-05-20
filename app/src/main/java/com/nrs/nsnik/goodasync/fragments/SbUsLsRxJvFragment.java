@@ -28,6 +28,7 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
     @BindView(R.id.sbUserList) RecyclerView mSbUsrList;
     @BindView(R.id.sbUserSwipe) SwipeRefreshLayout mRefreshList;
+    @BindView(R.id.emptyText) TextView mEmptyListText;
     private static final String LOG_TAG = SbUsLsRxJvFragment.class.getSimpleName();
     List<ShelBeeUserObject> mUserList;
     private Unbinder mUnbinder;
@@ -51,6 +52,12 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
         mSbUsrList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new SbUsrLsAdapter(getActivity(),mUserList);
         mSbUsrList.setAdapter(mAdapter);
+        setEmpty();
+    }
+
+    private void setEmpty(){
+        mSbUsrList.setVisibility(View.GONE);
+        mEmptyListText.setVisibility(View.VISIBLE);
     }
 
     private void listeners(){
