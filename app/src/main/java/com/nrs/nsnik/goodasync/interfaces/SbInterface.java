@@ -4,6 +4,7 @@ import com.nrs.nsnik.goodasync.objects.ShelBeeUserObject;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.GET;
@@ -17,5 +18,11 @@ public interface SbInterface {
 
     @GET("/booktrade/userQueryAll.php")
     Call<List<ShelBeeUserObject>> getSingleUser(@Query("uid") String userId);
+
+    @GET("/booktrade/userQueryEvery.php")
+    Observable<List<ShelBeeUserObject>> getUserListRx();
+
+    @GET("/answers?order=desc&sort=activity&site=stackoverflow")
+    Observable<List<ShelBeeUserObject>> getSingleUserRx(@Query("uid") String userId);
 
 }

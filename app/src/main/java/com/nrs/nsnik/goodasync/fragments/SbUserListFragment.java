@@ -4,6 +4,7 @@ package com.nrs.nsnik.goodasync.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.nrs.nsnik.goodasync.R;
 import com.nrs.nsnik.goodasync.adapters.SbUsrLsAdapter;
+import com.nrs.nsnik.goodasync.interfaces.ItemClickListener;
 import com.nrs.nsnik.goodasync.interfaces.SbInterface;
 import com.nrs.nsnik.goodasync.objects.ShelBeeUserObject;
 
@@ -57,8 +60,11 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
     private void initialize() {
         mUserList = new ArrayList<>();
         mSbUsrList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new SbUsrLsAdapter(getActivity(),mUserList);
+        mAdapter = new SbUsrLsAdapter(getActivity(), mUserList);
         mSbUsrList.setAdapter(mAdapter);
+        mSbUsrList.setHasFixedSize(true);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        mSbUsrList.addItemDecoration(itemDecoration);
         mRefreshList.setRefreshing(true);
         getUserList();
     }
@@ -89,8 +95,7 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
                 }else {
                     mRefreshList.setRefreshing(false);
                     mUserList.addAll(response.body());
-                    mAdapter = new SbUsrLsAdapter(getActivity(), mUserList);
-                    mSbUsrList.setAdapter(mAdapter);
+                    mAdapter.updateList(mUserList);
                 }
             }
 

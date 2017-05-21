@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 
 import com.nrs.nsnik.goodasync.fragments.SbUsLsRxJvFragment;
 import com.nrs.nsnik.goodasync.fragments.SbUserListFragment;
+import com.squareup.leakcanary.LeakCanary;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(getApplication());
         setTheme(R.style.transparentStatusBar);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);

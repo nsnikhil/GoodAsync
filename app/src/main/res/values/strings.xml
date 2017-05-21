@@ -16,6 +16,7 @@
     <!-- navItems-->
     <string name="navRetrofit">Retrofit</string>
     <string name="navRxJava">RxJava</string>
+    <string name="navDagger">Dagger2</string>
     <!-- -->
 
 </resources>
