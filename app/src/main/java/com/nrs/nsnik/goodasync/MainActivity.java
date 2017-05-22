@@ -96,18 +96,19 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                mDrawerLayout.closeDrawers();
                 switch (item.getItemId()) {
                     case R.id.navItem1:
                         if(getSupportFragmentManager().findFragmentByTag(mFragmentTags[0])==null){
                             replaceFragment(new SbUserListFragment(),mFragmentTags[0]);
+                            drawerAction(0);
                         }
-                        drawerAction(0);
                         break;
                     case R.id.navItem2:
                         if(getSupportFragmentManager().findFragmentByTag(mFragmentTags[1])==null){
                             replaceFragment(new SbUsLsRxJvFragment(),mFragmentTags[1]);
+                            drawerAction(1);
                         }
-                        drawerAction(1);
                         break;
                     case R.id.navItem3:
                         drawerAction(2);
@@ -129,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navItem1 = mNavigationView.getMenu().getItem(0).setChecked(false);
         MenuItem navItem2 = mNavigationView.getMenu().getItem(1).setChecked(false);
         MenuItem navItem3 = mNavigationView.getMenu().getItem(2).setChecked(false);
-        mDrawerLayout.closeDrawers();
         switch (key) {
             case 0:
                 navItem1.setChecked(true);
