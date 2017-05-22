@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.nrs.nsnik.goodasync.R;
 import com.nrs.nsnik.goodasync.adapters.SbUsrLsAdapter;
-import com.nrs.nsnik.goodasync.interfaces.ItemClickListener;
 import com.nrs.nsnik.goodasync.interfaces.SbInterface;
 import com.nrs.nsnik.goodasync.objects.ShelBeeUserObject;
 
@@ -73,8 +70,8 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
         mRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mAdapter.clearList();
                 mUserList.clear();
-                mSbUsrList.setAdapter(null);
                 getUserList();
             }
         });

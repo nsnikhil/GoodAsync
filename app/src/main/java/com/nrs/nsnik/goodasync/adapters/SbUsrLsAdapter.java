@@ -51,6 +51,10 @@ public class SbUsrLsAdapter extends RecyclerView.Adapter<SbUsrLsAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
+    public void clearList() {
+        mList.clear();
+    }
+
     private ShelBeeUserObject getItem(int adapterPosition) {
         return mList.get(adapterPosition);
     }
