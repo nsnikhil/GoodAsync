@@ -50,7 +50,6 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
     Retrofit mRetrofit;
     private Unbinder mUnbinder;
     private SbUsrLsAdapter mAdapter;
-    //private Observable<ShelBeeUserObject> mObservable;
 
     public SbUsLsRxJvFragment() {
     }
