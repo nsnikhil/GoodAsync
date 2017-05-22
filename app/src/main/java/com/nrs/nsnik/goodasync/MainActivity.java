@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment,String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.mainContainer, fragment,tag);
+        ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         ft.commit();
     }
 
