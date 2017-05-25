@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/matchParent"
+    android:layout_height="@dimen/headerHeight"
+    android:padding="@dimen/sixteen"
+    android:gravity="center_vertical"
     android:background="@color/colorPrimary"
-    android:layout_height="@dimen/headerHeight">
+    android:fontFamily="sans-serif-thin"
+    android:text="@string/app_name"
+    android:textColor="@color/white"
+    android:textSize="24sp"
+    android:textStyle="bold" />
 
-    <TextView
-        style="@style/wrapContent"
-        android:layout_centerVertical="true"
-        android:textSize="24sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-thin"
-        android:layout_margin="@dimen/sixteen"
-        android:text="@string/app_name" />
-
-</RelativeLayout>

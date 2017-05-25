@@ -13,7 +13,7 @@
             android:id="@+id/mainToolBar"
             layout="@layout/toolbar" />
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/mainContainer"
             style="@style/matchParent"/>
 

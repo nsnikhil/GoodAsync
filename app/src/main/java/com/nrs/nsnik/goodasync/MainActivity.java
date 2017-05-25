@@ -9,7 +9,6 @@ import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.nrs.nsnik.goodasync.fragments.SbUsLsRxJvFragment;
@@ -29,11 +29,15 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.mainToolBar) Toolbar mMainToolbar;
-    @BindView(R.id.mainDrawerLayout) DrawerLayout mDrawerLayout;
-    @BindView(R.id.mainNavigationView) NavigationView mNavigationView;
-    @BindView(R.id.mainContainer) RelativeLayout mMainContainer;
-    private static final String[] mFragmentTags = {"retrofit","rxjava"};
+    private static final String[] mFragmentTags = {"retrofit", "rxjava"};
+    @BindView(R.id.mainToolBar)
+    Toolbar mMainToolbar;
+    @BindView(R.id.mainDrawerLayout)
+    DrawerLayout mDrawerLayout;
+    @BindView(R.id.mainNavigationView)
+    NavigationView mNavigationView;
+    @BindView(R.id.mainContainer)
+    FrameLayout mMainContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             initialize();
             initializeDrawer();
             listeners();
-            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer,new SbUserListFragment(),mFragmentTags[0]).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new SbUserListFragment(), mFragmentTags[0]).commit();
         } else {
             removeOffConnection(savedInstanceState);
         }
@@ -99,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawers();
                 switch (item.getItemId()) {
                     case R.id.navItem1:
-                        if(getSupportFragmentManager().findFragmentByTag(mFragmentTags[0])==null){
-                            replaceFragment(new SbUserListFragment(),mFragmentTags[0]);
+                        if (getSupportFragmentManager().findFragmentByTag(mFragmentTags[0]) == null) {
+                            replaceFragment(new SbUserListFragment(), mFragmentTags[0]);
                             drawerAction(0);
                         }
                         break;
                     case R.id.navItem2:
-                        if(getSupportFragmentManager().findFragmentByTag(mFragmentTags[1])==null){
-                            replaceFragment(new SbUsLsRxJvFragment(),mFragmentTags[1]);
+                        if (getSupportFragmentManager().findFragmentByTag(mFragmentTags[1]) == null) {
+                            replaceFragment(new SbUsLsRxJvFragment(), mFragmentTags[1]);
                             drawerAction(1);
                         }
                         break;
@@ -119,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void replaceFragment(Fragment fragment,String tag) {
+    public void replaceFragment(Fragment fragment, String tag) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.mainContainer, fragment,tag);
+        ft.replace(R.id.mainContainer, fragment, tag);
         ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         ft.commit();
     }

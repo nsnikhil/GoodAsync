@@ -35,10 +35,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SbUserListFragment extends android.support.v4.app.Fragment {
 
 
-    @BindView(R.id.sbUserList) RecyclerView mSbUsrList;
-    @BindView(R.id.sbUserSwipe) SwipeRefreshLayout mRefreshList;
-    @BindView(R.id.emptyText) TextView mEmptyListText;
     private static final String LOG_TAG = SbUserListFragment.class.getSimpleName();
+    @BindView(R.id.sbUserList)
+    RecyclerView mSbUsrList;
+    @BindView(R.id.sbUserSwipe)
+    SwipeRefreshLayout mRefreshList;
+    @BindView(R.id.emptyText)
+    TextView mEmptyListText;
     List<ShelBeeUserObject> mUserList;
     private Unbinder mUnbinder;
     private SbUsrLsAdapter mAdapter;
@@ -50,7 +53,7 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sb_user_list, container, false);
-        mUnbinder = ButterKnife.bind(this,v);
+        mUnbinder = ButterKnife.bind(this, v);
         initialize();
         listeners();
         return v;
@@ -79,7 +82,7 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
         });
     }
 
-    private void getUserList(){
+    private void getUserList() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getActivity().getResources().getString(R.string.urlShelfBeeBase))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -89,9 +92,9 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
         call.enqueue(new Callback<List<ShelBeeUserObject>>() {
             @Override
             public void onResponse(@NonNull Call<List<ShelBeeUserObject>> call, @NonNull Response<List<ShelBeeUserObject>> response) {
-                if(response.body().size()<=0){
-                   setEmpty();
-                }else {
+                if (response.body().size() <= 0) {
+                    setEmpty();
+                } else {
                     mRefreshList.setRefreshing(false);
                     mUserList.addAll(response.body());
                     mAdapter.updateList(mUserList);
@@ -100,12 +103,12 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<ShelBeeUserObject>> call, @NonNull Throwable t) {
-                Log.d(LOG_TAG,t.toString());
+                Log.d(LOG_TAG, t.toString());
             }
         });
     }
 
-    private void setEmpty(){
+    private void setEmpty() {
         mSbUsrList.setVisibility(View.GONE);
         mEmptyListText.setVisibility(View.VISIBLE);
     }
@@ -122,9 +125,11 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
                 @Override
                 public void onAnimationStart(Animation animation) {
                 }
+
                 public void onAnimationEnd(Animation animation) {
                     getView().setLayerType(View.LAYER_TYPE_NONE, null);
                 }
+
                 @Override
                 public void onAnimationRepeat(Animation animation) {
                 }
@@ -136,7 +141,7 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroy() {
-        if(mUnbinder!=null) {
+        if (mUnbinder != null) {
             mUnbinder.unbind();
         }
         super.onDestroy();

@@ -18,7 +18,6 @@ import com.nrs.nsnik.goodasync.R;
 import com.nrs.nsnik.goodasync.adapters.SbUsrLsAdapter;
 import com.nrs.nsnik.goodasync.interfaces.SbInterface;
 import com.nrs.nsnik.goodasync.objects.ShelBeeUserObject;
-import com.nrs.nsnik.goodasync.objects.StudentObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +39,6 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -59,9 +57,9 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
     TextView mEmptyListText;
     List<ShelBeeUserObject> mUserList;
     Retrofit mRetrofit;
+    CompositeDisposable mDisposable;
     private Unbinder mUnbinder;
     private SbUsrLsAdapter mAdapter;
-    CompositeDisposable mDisposable;
 
     public SbUsLsRxJvFragment() {
     }
@@ -91,14 +89,14 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
         //getStudentListDrivool();
     }
 
-    private Map<String,String> getParams(){
+    private Map<String, String> getParams() {
         Map<String, String> params = new HashMap<>();
         params.put("gapn", "mum-intel-stmary");
         params.put("route_id", "bus16smsicse");
         return params;
     }
 
-    private void getStudentListDrivool(){
+    private void getStudentListDrivool() {
         SbInterface api = getStudentClient().create(SbInterface.class);
         mDisposable.add(api.getStudentString(getParams()).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -120,10 +118,10 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
                 }, new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        
+
                     }
                 }));
-               
+
     }
 
     public Retrofit getStudentClient() {
@@ -167,7 +165,7 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
                     @Override
                     public void onComplete() {
-                        
+
                     }
                 });
     }
@@ -193,12 +191,12 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        Log.d(TAG+"r", "run: ");
+                        Log.d(TAG + "r", "run: ");
                     }
                 }, new Consumer<Disposable>() {
                     @Override
                     public void accept(@NonNull Disposable disposable) throws Exception {
-                        Log.d(TAG+"d", disposable.toString());
+                        Log.d(TAG + "d", disposable.toString());
                     }
                 }));
     }
@@ -235,26 +233,26 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
         observable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<ShelBeeUserObject>() {
-                    @Override
-                    public void accept(@NonNull ShelBeeUserObject shelBeeUserObject) throws Exception {
+            @Override
+            public void accept(@NonNull ShelBeeUserObject shelBeeUserObject) throws Exception {
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
+            }
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(@NonNull Throwable throwable) throws Exception {
 
-                    }
-                }, new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-                        
-                    }
-                });
+            }
+        }, new Action() {
+            @Override
+            public void run() throws Exception {
+
+            }
+        }, new Consumer<Disposable>() {
+            @Override
+            public void accept(@NonNull Disposable disposable) throws Exception {
+
+            }
+        });
 
 
 
@@ -325,9 +323,10 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroy() {
-        if(mDisposable!=null){
+        if (mDisposable != null) {
             mDisposable.dispose();
-        }if(mUnbinder!=null){
+        }
+        if (mUnbinder != null) {
             mUnbinder.unbind();
         }
         super.onDestroy();
