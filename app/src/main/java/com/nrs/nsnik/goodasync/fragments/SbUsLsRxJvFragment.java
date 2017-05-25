@@ -18,9 +18,12 @@ import com.nrs.nsnik.goodasync.R;
 import com.nrs.nsnik.goodasync.adapters.SbUsrLsAdapter;
 import com.nrs.nsnik.goodasync.interfaces.SbInterface;
 import com.nrs.nsnik.goodasync.objects.ShelBeeUserObject;
+import com.nrs.nsnik.goodasync.objects.StudentObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +34,14 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,7 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
 
-    private static final String LOG_TAG = SbUsLsRxJvFragment.class.getSimpleName();
+    private static final String TAG = SbUsLsRxJvFragment.class.getSimpleName();
     @BindView(R.id.sbUserList)
     RecyclerView mSbUsrList;
     @BindView(R.id.sbUserSwipe)
@@ -52,6 +61,7 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
     Retrofit mRetrofit;
     private Unbinder mUnbinder;
     private SbUsrLsAdapter mAdapter;
+    CompositeDisposable mDisposable;
 
     public SbUsLsRxJvFragment() {
     }
@@ -75,7 +85,60 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         mSbUsrList.addItemDecoration(itemDecoration);
         mRefreshList.setRefreshing(true);
-        getListRxAndroid();
+        mDisposable = new CompositeDisposable();
+        //getListRxAndroid();
+        getListRxAndroidDispose();
+        //getStudentListDrivool();
+    }
+
+    private Map<String,String> getParams(){
+        Map<String, String> params = new HashMap<>();
+        params.put("gapn", "mum-intel-stmary");
+        params.put("route_id", "bus16smsicse");
+        return params;
+    }
+
+    private void getStudentListDrivool(){
+        SbInterface api = getStudentClient().create(SbInterface.class);
+        mDisposable.add(api.getStudentString(getParams()).subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        Log.d(TAG, s);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.d(TAG, throwable.toString());
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+
+                    }
+                }, new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        
+                    }
+                }));
+               
+    }
+
+    public Retrofit getStudentClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        if (mRetrofit == null) {
+            mRetrofit = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl("http://isirs.org/")
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return mRetrofit;
     }
 
     private void getListRxAndroid() {
@@ -99,14 +162,45 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d(LOG_TAG, e.getMessage());
+                        Log.d(TAG, e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-
+                        
                     }
                 });
+    }
+
+    private void getListRxAndroidDispose() {
+        SbInterface api = getClient().create(SbInterface.class);
+        mDisposable.add(api.getUserListRx().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<ShelBeeUserObject>>() {
+                    @Override
+                    public void accept(@NonNull List<ShelBeeUserObject> list) throws Exception {
+                        if (list.size() <= 0) {
+                            setEmpty();
+                        } else {
+                            mRefreshList.setRefreshing(false);
+                            mAdapter.updateList(list);
+                        }
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Log.d(TAG, throwable.toString());
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        Log.d(TAG+"r", "run: ");
+                    }
+                }, new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        Log.d(TAG+"d", disposable.toString());
+                    }
+                }));
     }
 
     private void getListRx() {
@@ -117,8 +211,8 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        Observer<ShelBeeUserObject> observer = new Observer<ShelBeeUserObject>() {
-            @Override
+        /*Observer<ShelBeeUserObject> observer = new Observer<ShelBeeUserObject>() {
+           @Override
             public void onSubscribe(Disposable d) {
                 Log.e(LOG_TAG, "onSubscribe: ");
             }
@@ -137,10 +231,36 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
             public void onComplete() {
                 Log.e(LOG_TAG, "onComplete: All Done!");
             }
-        };
-        observable.subscribeOn(Schedulers.newThread());
+        };*/
+
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<ShelBeeUserObject>() {
+                    @Override
+                    public void accept(@NonNull ShelBeeUserObject shelBeeUserObject) throws Exception {
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        
+                    }
+                }, new Action() {
+                    @Override
+                    public void run() throws Exception {
+
+                    }
+                }, new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        
+                    }
+                });
+
+
+
+        /*observable.subscribeOn(Schedulers.newThread());
         observable.observeOn(AndroidSchedulers.mainThread());
-        observable.subscribe(observer);
+        observable.subscribe(observer);*/
     }
 
 
@@ -166,7 +286,9 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
             public void onRefresh() {
                 mAdapter.clearList();
                 mUserList.clear();
-                getListRxAndroid();
+                getListRxAndroidDispose();
+                //getListRxAndroid();
+                //getStudentListDrivool();
             }
         });
     }
@@ -183,9 +305,11 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
                 @Override
                 public void onAnimationStart(Animation animation) {
                 }
+
                 public void onAnimationEnd(Animation animation) {
                     getView().setLayerType(View.LAYER_TYPE_NONE, null);
                 }
+
                 @Override
                 public void onAnimationRepeat(Animation animation) {
                 }
@@ -201,7 +325,11 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroy() {
-        mUnbinder.unbind();
+        if(mDisposable!=null){
+            mDisposable.dispose();
+        }if(mUnbinder!=null){
+            mUnbinder.unbind();
+        }
         super.onDestroy();
     }
 }

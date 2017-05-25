@@ -136,7 +136,9 @@ public class SbUserListFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onDestroy() {
-        mUnbinder.unbind();
+        if(mUnbinder!=null) {
+            mUnbinder.unbind();
+        }
         super.onDestroy();
     }
 }
