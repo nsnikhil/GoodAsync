@@ -2,10 +2,6 @@ package com.nrs.nsnik.goodasync.objects;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Nikhil on 25-May-17.
- */
-
 public class StudentObject {
 
     @SerializedName("studentName")

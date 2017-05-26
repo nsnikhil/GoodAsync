@@ -5,6 +5,8 @@
     <string name="noInternet">No Internet</string>
     <string name="retry">Retry</string>
     <string name="empty">List Empty</string>
+    <string name="add">Add</string>
+    <string name="show">Show</string>
 
     <!-- Urls-->
     <string name="urlShelfBeeBase">http://ec2-35-154-208-1.ap-south-1.compute.amazonaws.com</string>

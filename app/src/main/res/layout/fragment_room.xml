@@ -1,11 +1,27 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/matchParent"
+    style="@style/horizontalLinearLayout"
     tools:context="com.nrs.nsnik.goodasync.fragments.RoomFragment">
 
-    <TextView
-        style="@style/wrapContent"
-        android:layout_centerInParent="true"
-        android:text="@string/navRoom" />
 
-</RelativeLayout>
+    <Button
+        style="@style/wrapContent"
+        android:id="@+id/roomTempAdd"
+        android:layout_width="0dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/eight"
+        android:layout_weight="1"
+        android:text="@string/add"
+        android:theme="@style/buttonColor" />
+
+    <Button
+        style="@style/wrapContent"
+        android:layout_width="0dp"
+        android:id="@+id/roomTempShow"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/eight"
+        android:layout_weight="1"
+        android:text="@string/show"
+        android:theme="@style/buttonColor" />
+
+</LinearLayout>

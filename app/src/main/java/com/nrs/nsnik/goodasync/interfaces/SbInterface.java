@@ -30,8 +30,9 @@ public interface SbInterface {
     @GET("/booktrade/userQueryAll.php")
     Observable<List<ShelBeeUserObject>> getSingleUserRx(@Query("uid") String userId);
 
-    @GET("student_data.php")
-    Observable<List<StudentObject>> getStudentList(@QueryMap(encoded = true) Map<String, String> params);
+    @FormUrlEncoded
+    @POST("/bus_tracking_ws/student_data.php")
+    Observable<List<StudentObject>> getStudentList(@FieldMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("/bus_tracking_ws/student_data.php")
