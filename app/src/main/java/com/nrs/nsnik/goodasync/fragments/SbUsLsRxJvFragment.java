@@ -1,6 +1,7 @@
 package com.nrs.nsnik.goodasync.fragments;
 
 
+import android.arch.lifecycle.LifecycleFragment;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -45,7 +46,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
+public class SbUsLsRxJvFragment extends LifecycleFragment {
 
 
     private static final String TAG = SbUsLsRxJvFragment.class.getSimpleName();
@@ -86,58 +87,8 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
         mDisposable = new CompositeDisposable();
         //getListRxAndroid();
         getListRxAndroidDispose();
-        //getStudentListDrivool();
     }
 
-    private Map<String, String> getParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("gapn", "mum-intel-stmary");
-        params.put("route_id", "bus16smsicse");
-        return params;
-    }
-
-    private void getStudentListDrivool() {
-        SbInterface api = getStudentClient().create(SbInterface.class);
-        mDisposable.add(api.getStudentString(getParams()).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-                        Log.d(TAG, s);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Log.d(TAG, throwable.toString());
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-
-                    }
-                }, new Consumer<Disposable>() {
-                    @Override
-                    public void accept(@NonNull Disposable disposable) throws Exception {
-
-                    }
-                }));
-
-    }
-
-    public Retrofit getStudentClient() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-        if (mRetrofit == null) {
-            mRetrofit = new Retrofit.Builder()
-                    .client(client)
-                    .baseUrl("http://isirs.org/")
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
-        return mRetrofit;
-    }
 
     private void getListRxAndroid() {
         SbInterface api = getClient().create(SbInterface.class);
@@ -253,19 +204,19 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
 
             }
         });
-
-
-
         /*observable.subscribeOn(Schedulers.newThread());
         observable.observeOn(AndroidSchedulers.mainThread());
         observable.subscribe(observer);*/
     }
 
-
     public Retrofit getClient() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(getActivity().getResources().getString(R.string.urlShelfBeeBase))
+                    .client(client)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
@@ -286,7 +237,6 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
                 mUserList.clear();
                 getListRxAndroidDispose();
                 //getListRxAndroid();
-                //getStudentListDrivool();
             }
         });
     }
@@ -317,18 +267,17 @@ public class SbUsLsRxJvFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        cleanUp();
+        super.onDestroy();
     }
 
-    @Override
-    public void onDestroy() {
+    private void cleanUp(){
         if (mDisposable != null) {
             mDisposable.dispose();
         }
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
-        super.onDestroy();
     }
 }

@@ -22,6 +22,17 @@
             android:icon="@mipmap/ic_launcher_round"
             android:title="@string/navDagger" />
 
+        <item
+            android:id="@+id/navItem4"
+            android:checkable="true"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="@string/navViewModel" />
+
+        <item
+            android:id="@+id/navItem5"
+            android:checkable="true"
+            android:icon="@mipmap/ic_launcher_round"
+            android:title="@string/navRoom" />
 
     </group>
 

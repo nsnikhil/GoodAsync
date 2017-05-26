@@ -20,8 +20,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.nrs.nsnik.goodasync.fragments.Dagger2Fragment;
+import com.nrs.nsnik.goodasync.fragments.RoomFragment;
 import com.nrs.nsnik.goodasync.fragments.SbUsLsRxJvFragment;
 import com.nrs.nsnik.goodasync.fragments.SbUserListFragment;
+import com.nrs.nsnik.goodasync.fragments.ViewModelFragment;
 import com.squareup.leakcanary.LeakCanary;
 
 import butterknife.BindView;
@@ -29,7 +32,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String[] mFragmentTags = {"retrofit", "rxjava"};
+    private static final String[] mFragmentTags = {"retrofit", "rxjava","dagger2","viewmodel","room"};
     @BindView(R.id.mainToolBar)
     Toolbar mMainToolbar;
     @BindView(R.id.mainDrawerLayout)
@@ -115,7 +118,22 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.navItem3:
-                        drawerAction(2);
+                        if (getSupportFragmentManager().findFragmentByTag(mFragmentTags[2]) == null) {
+                            replaceFragment(new Dagger2Fragment(), mFragmentTags[2]);
+                            drawerAction(2);
+                        }
+                        break;
+                    case R.id.navItem4:
+                        if (getSupportFragmentManager().findFragmentByTag(mFragmentTags[3]) == null) {
+                            replaceFragment(new ViewModelFragment(), mFragmentTags[3]);
+                            drawerAction(3);
+                        }
+                        break;
+                    case R.id.navItem5:
+                        if (getSupportFragmentManager().findFragmentByTag(mFragmentTags[4]) == null) {
+                            replaceFragment(new RoomFragment(), mFragmentTags[4]);
+                            drawerAction(4);
+                        }
                         break;
                 }
                 return false;
@@ -135,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
         MenuItem navItem1 = mNavigationView.getMenu().getItem(0).setChecked(false);
         MenuItem navItem2 = mNavigationView.getMenu().getItem(1).setChecked(false);
         MenuItem navItem3 = mNavigationView.getMenu().getItem(2).setChecked(false);
+        MenuItem navItem4 = mNavigationView.getMenu().getItem(3).setChecked(false);
+        MenuItem navItem5 = mNavigationView.getMenu().getItem(4).setChecked(false);
         switch (key) {
             case 0:
                 navItem1.setChecked(true);
@@ -144,6 +164,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 navItem3.setChecked(true);
+                break;
+            case 3:
+                navItem4.setChecked(true);
+                break;
+            case 4:
+                navItem5.setChecked(true);
                 break;
         }
     }

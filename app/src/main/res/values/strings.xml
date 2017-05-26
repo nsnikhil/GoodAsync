@@ -8,15 +8,17 @@
 
     <!-- Urls-->
     <string name="urlShelfBeeBase">http://ec2-35-154-208-1.ap-south-1.compute.amazonaws.com</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- -->
 
     <!-- navItems-->
     <string name="navRetrofit">Retrofit</string>
     <string name="navRxJava">RxJava</string>
     <string name="navDagger">Dagger2</string>
+    <string name="navViewModel">ViewModel</string>
+    <string name="navRoom">Room</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- -->
 
 </resources>
